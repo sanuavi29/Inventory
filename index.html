@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventory Management</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <main>
+      <section class="card auth-card" id="authSection">
+        <form id="loginForm" class="auth-form">
+          <h1>Login</h1>
+          <p class="auth-subtitle">Sign in to your account</p>
+
+          <label>Username</label>
+          <input type="text" id="loginUsername" placeholder="username" autocomplete="username" />
+
+          <label>Password</label>
+          <input type="password" id="loginPassword" placeholder="password" autocomplete="current-password" />
+
+          <button type="submit" class="primary-btn login-btn">Sign In</button>
+          <p class="small-link">No account? <a href="#" id="showRegisterLink">Create one</a></p>
+        </form>
+
+        <form id="registerForm" class="auth-form hidden">
+          <h1>Signup</h1>
+          <p class="auth-subtitle">Create your new account</p>
+
+          <label>Username</label>
+          <input type="text" id="registerUsername" placeholder="username" autocomplete="username" />
+
+          <label>Password</label>
+          <input type="password" id="registerPassword" placeholder="password" autocomplete="new-password" />
+
+          <button type="submit" class="primary-btn login-btn">Sign Up</button>
+          <p class="small-link">Already have an account? <a href="#" id="showLoginLink">Login</a></p>
+        </form>
+      </section>
+
+      <section class="app-card hidden" id="appSection">
+        <div class="dashboard-topbar">
+          <h1>Inventory Management</h1>
+          <div class="dashboard-user-section">
+            <span id="adminName">Admin User</span>
+            <button id="logoutButton" class="secondary-btn">Logout</button>
+          </div>
+        </div>
+
+        <div class="dashboard-section">
+          <form id="taskForm" class="product-form">
+            <input type="text" id="productName" placeholder="Product Name" />
+            <input type="number" id="productPrice" placeholder="Price" step="0.01" min="0" />
+            <button type="submit" class="primary-btn add-btn">Add Product</button>
+          </form>
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <div class="dashboard-section">
+          <div class="section-header">
+            <h2>Products</h2>
+          </div>
+          <div class="table-wrapper">
+            <table class="products-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Price</th>
+                </tr>
+              </thead>
+              <tbody id="taskList">
+                <tr><td colspan="3" class="empty-message">No products yet. Add one above.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
