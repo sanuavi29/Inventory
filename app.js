@@ -111,3 +111,147 @@ if (registerBtn) {
 if (logoutBtn) {
   logoutBtn.addEventListener("click", logoutUser);
 }
+const BASE_URL = ".";
+
+
+// Common fetch request
+async function apiRequest(url, method, bodyData = null, useToken = false) {
+
+  const headers = {
+    "Content-Type": "application/json"
+  };
+
+  if (useToken) {
+
+    const token = readToken();
+
+    if (!token) {
+      throw new Error("Login required");
+    }
+
+    headers.Authorization = token;
+  }
+
+  const options = {
+    method,
+    headers
+  };
+
+  if (bodyData) {
+    options.body = JSON.stringify(bodyData);
+  }
+
+  const response = await fetch(`${BASE_URL}/${url}`, options);
+
+  return await response.json();
+}
+
+
+// Register user
+async function registerUser(e) {
+
+  e.preventDefault();
+
+  const username =
+    document.getElementById("registerUsername").value.trim();
+
+  const password =
+    document.getElementById("registerPassword").value.trim();
+
+  if (username === "" || password === "") {
+
+    displayMessage("Please fill all fields", "error");
+
+    return;
+  }
+
+  try {
+
+    const result = await apiRequest(
+      "register.php",
+      "POST",
+      {
+        username,
+        password
+      }
+    );
+
+    if (result.status === "success") {
+
+      displayMessage("Registration completed");
+
+      registerFormEl.reset();
+
+      changeTab("login");
+
+    } else {
+
+      displayMessage("Username already exists", "error");
+    }
+
+  } catch (err) {
+
+    displayMessage("Something went wrong", "error");
+  }
+}
+
+
+// Login user
+async function loginUser(e) {
+
+  e.preventDefault();
+
+  const username =
+    document.getElementById("loginUsername").value.trim();
+
+  const password =
+    document.getElementById("loginPassword").value.trim();
+
+  if (username === "" || password === "") {
+
+    displayMessage("Please fill all fields", "error");
+
+    return;
+  }
+
+  try {
+
+    const result = await apiRequest(
+      "login.php",
+      "POST",
+      {
+        username,
+        password
+      }
+    );
+
+    if (result.status === "success") {
+
+      storeToken(result.token);
+
+      displayMessage("Login successful");
+
+      loginFormEl.reset();
+
+      loadApplication();
+
+    } else {
+
+      displayMessage("Invalid username or password", "error");
+    }
+
+  } catch (err) {
+
+    displayMessage("Login failed", "error");
+  }
+}
+
+
+// Events
+if (loginFormEl) {
+  loginFormEl.addEventListener("submit", loginUser);
+}
+
+if (registerFormEl) {
+  registerFormEl.addEventListener("submit", registerUser);
+}
